@@ -11,7 +11,7 @@
 # Patrick Fleming,
 # Johns Hopkins University (JHU), Baltimore, MD, USA.
 #
-# CONTACT: carlos.silveira@unifei.edu.br
+# CONTACTS: hersinsoares@gmail.com, carlos.silveira@unifei.edu.br
 #
 # FIBOS install on R:
 # library(devtools)

@@ -12,7 +12,7 @@
 # Patrick Fleming,
 # Johns Hopkins University (JHU), Baltimore, MD, USA.
 #
-# CONTACT: carlos.silveira@unifei.edu.br
+# CONTACTS: hersinsoares@gmail.com, carlos.silveira@unifei.edu.br
 #
 # FIBOS install on R:
 # library(devtools)
@@ -24,6 +24,10 @@ library(tidyverse)
 library(fs)
 library(httr)
 library(bio3d)
+library(furrr)
+library(tictoc)
+library(ggpubr)
+library(tictoc)
 
 
 # SOURCE OF AUXILIARY FUNCTIONS
@@ -57,7 +61,7 @@ if(0){
 if(0){
   source <- "https://data.rcsb.org/rest/v1/core/polymer_entity/"
   par <- "/1"
-  #pdb.meta <- pdb.ids |> map(\(x) get_pdb_metadata(x, source, par))
+  pdb.meta <- pdb.ids |> map(\(x) get_pdb_metadata(x, source, par))
   pdb.uniprot.id <- pdb.meta |> map(\(x) get_pdb_uniprot_id(x))
   pdb.aa.seq <- pdb.meta |> map(\(x) get_pdb_aa_seq(x))
 }
@@ -104,7 +108,7 @@ if(0){
   csm.aa.seq <- csm.meta[csm.meta.ok] |> map(\(x) get_pdb_aa_seq(x))
 }
 
-# CREATE THE TABLES FOR COMPARATIVE CALCULATIONS OF THE OSP
+# CREATE THE TABLES FOR COMPARATIVE CALCULATIONS OF THE OS AND OSP
 if(0){
   # main table with existing coordinates and metadata for AF models
   pdb.csm.tab <- tibble(PDB.ids = pdb.ids[csm.ok][csm.meta.ok], 
@@ -120,7 +124,7 @@ if(0){
                  mutate(pLDDT_global = csm.bio3d[csm.meta.ok] |> 
                  map(\(x) round(mean(x$atom$b),2)) |> unlist()) # calculate global pLDDT metric
   
-  # filter main table in a work table with difference between AF and Experimental less than 5 aa in size
+  # filter main table to produce work table with difference between AF and Experimental less than 5 aa in size
   pdb.csm.tab.work <- pdb.csm.tab |> filter(abs(aaDIFF) < 5)
   
   # create study case output table
@@ -161,15 +165,127 @@ if(0){
 
 }
 
+# CALCULATE OCCLUDE SURFACE AT ATOM AND RESIDUE LEVEL FOR EXPERIMENTAL PDB
+if(0){
 
+  # calculate OS at atom level in parallel with 8 cores
+  tic()
+  plan(multisession, workers = 8) #comment this line to serial
+  pdb.exp.fibos <- pdb.csm.tab.work$PDB.path |> future_map(occluded_surface, method = "FIBOS", 
+                                                .options = furrr_options(seed = 123))
+  toc()
+  names(pdb.exp.fibos) <- paste0(pdb.csm.tab.work$PDB.ids,"_exp")
+  
+  #calculate the OSP metric at the residue level
+  pdb.exp.osp <- pdb.csm.tab.work$SRF.path |> map(osp)
+  names(pdb.exp.osp) <- paste0(pdb.csm.tab.work$PDB.ids,"_exp")
+  
+  # save the calculation files in the "fibos_files_pdb_exp" folder
+  file.rename("fibos_files","fibos_files_exp_pdb")
+  
+
+}
+
+# CALCULATE OCCLUDE SURFACE AT ATOM AND RESIDUE LEVEL FOR AF MODELS
 if(0){
   
-  pdb.exp.fibos = pdb.csm.tab.work$PDB.path %>% map(occluded_surface, method = "FIBOS")
-
-  pdb.exp.osp <- pdb.csm.tab.work$SRF.path |> map(osp)
-
-  file.rename("fibos_files","fibos_files_exp_pdb")
+  # calculate OS at atom level in parallel with 8 cores
+  tictoc::tic()
+  plan(multisession, workers = 8) #comment this line to serial
+  pdb.csm.fibos <- pdb.csm.tab.work$CSM.path.new |> future_map(occluded_surface, method = "FIBOS", 
+                                                               .options = furrr_options(seed = 123))
+  tictoc::toc()
+  names(pdb.csm.fibos) <- paste0(pdb.csm.tab.work$PDB.ids,"_af")
+  
+  #calculate the OSP metric at the residue level
+  pdb.csm.osp <- pdb.csm.tab.work$SRF.path |> map(osp)
+  names(pdb.csm.osp) <- paste0(pdb.csm.tab.work$PDB.ids,"_af")
+  
+  # save the calculation files in the "fibos_files_pdb_exp" folder
+  file.rename("fibos_files","fibos_files_csm_pdb")
   
 }
 
+# MAKE OSP UNIFIED TABLES
+if(0){
+  
+  folder <- "data"
+  
+  file <- "study-case-osp-pdb-unique-tab.csv"
+  pdb.exp.osp.uni <- pdb.exp.osp |> bind_rows(.id = "ID")
+  write_csv(pdb.exp.osp.uni, path(folder, file))
+  
+  file <- "study-case-osp-af-unique-tab.csv"
+  pdb.csm.osp.uni <- pdb.csm.osp |> bind_rows(.id = "ID")
+  write_csv(pdb.csm.osp.uni, path(folder, file))
+  
+}
 
+# MAKE OPS STATISTICAL TABLE
+if(0){
+  
+  res.stat <- tibble(ID = pdb.csm.tab.work$PDB.ids,
+                     osp.exp.mean = pdb.exp.osp |> map(\(x) mean(x$OSP)) |> unlist(),
+                     osp.af.mean = pdb.csm.osp |> map(\(x) mean(x$OSP)) |> unlist(),
+                     osp.exp.sd = pdb.exp.osp |> map(\(x) sd(x$OSP)) |> unlist(),
+                     osp.af.sd = pdb.csm.osp |> map(\(x) sd(x$OSP)) |> unlist()
+  )
+  
+  # TOGGLE TO 1 TO SAVE IT
+  if(0) res.stat |> mutate(across(where(is.numeric), ~round(.x, 3))) |> 
+        write_csv("data/osp-mean-sd-exp-af.csv")
+}
+
+# MAKE PLOT OF MAIN FIGURE 02 OF THE ARTCILE
+if(0){
+  par.lines <- tibble(
+    mean = round(c(mean(res.stat$osp.exp.mean),mean(res.stat$osp.af.mean)),3),
+    sd =  round(c(mean(res.stat$osp.exp.sd),mean(res.stat$osp.af.sd)),3),
+    type = c("solid", "81"),
+    color = c("#F8766D","#00BFC4")
+  )
+  
+  
+  p1 <- res.stat |> rename(`Experimental PDB` = osp.exp.mean, `Predicted AF` = osp.af.mean) |>
+    select(!ID) |> 
+    pivot_longer(!ends_with("sd"), names_to = "TYPE:", 
+                 values_to = "mean(OSP)") |> 
+    ggplot(aes(x = `mean(OSP)`, color = `TYPE:`, linetype = `TYPE:`)) +
+    stat_density(geom = "line", position = "identity",  linewidth = 1.5) +
+    scale_linetype_manual(values = par.lines$type) + 
+    scale_x_continuous(breaks = seq(0.38, 0.48, by = 0.04)) +
+    theme_classic() + 
+    theme(axis.text.y = element_blank(),
+          axis.line.y = element_blank(),
+          axis.title.y = element_blank(),
+          axis.ticks.y = element_blank(),
+          axis.title.x = element_text(vjust = -1.5),
+          legend.position = "none") +
+    guides(linetype = guide_legend(keywidth = 3))
+  #print(p1)
+  
+  p2 <- res.stat |> rename(`Experimental PDB` = osp.exp.sd, `Predicted AF` = osp.af.sd) |>
+    select(!ID) |>
+    pivot_longer(!ends_with("mean"), names_to = "TYPE:",
+                 values_to = "sd(OSP)") |>
+    ggplot(aes(x = `sd(OSP)`, color = `TYPE:`, linetype = `TYPE:`)) +
+    stat_density(geom = "line", position = "identity", linewidth = 1.5) +
+    scale_linetype_manual(values = par.lines$type) +
+    theme_classic() +
+    theme(axis.text.y = element_blank(),
+          axis.line.y = element_blank(),
+          axis.title.y = element_blank(),
+          axis.ticks.y = element_blank(),
+          axis.title.x = element_text(vjust = -1.5),
+          legend.position = "none") +
+    guides(linetype = guide_legend(keywidth = 3))
+  #print(p2)
+  #
+  title <- "Protein Packing Density Distributions for Predicted and Experimental Models\n"
+  p12 <- ggarrange(p1, p2, ncol=2, labels=c("A)","B)"), common.legend = T,
+                   legend = "bottom")
+  p12 <- annotate_figure(p12, top = text_grob(title,
+                                              color = "black", face = "plain", size = 16))
+  print(p12)
+
+}

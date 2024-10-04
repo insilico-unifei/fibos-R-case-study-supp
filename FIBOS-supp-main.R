@@ -37,7 +37,7 @@ library(geosphere)
 library(rPDBapi)
 
 # SOURCE OF AUXILIARY FUNCTIONS
-source("FIBO-supp-fun-v2.R")
+source("FIBOS-supp-fun.R")
 
 # DEFINE PARAMETERS FOR OS ON SPHERE, FOR 212 DOTS
 if(0){

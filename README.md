@@ -10,13 +10,13 @@ We also show codes used in the production of the supplementary material of the a
 
 ## Files
 
-1.  **FIBOS-study-case-main.R**: Main R script used in the case study\
+1.  **FIBOS-study-case-main.R**: Main R script used in the case study 
 
-2.  **FIBOS-study-case-fun.R**: R file containing auxiliary functions used by `FIBOS-study-case.main.R`\
+2.  **FIBOS-study-case-fun.R**: R file containing auxiliary functions used by `FIBOS-study-case.main.R` 
 
-3.  **FIBOS-supp-main.R**: Main R script used for producing supplementary material\
+3.  **FIBOS-supp-main.R**: Main R script used for producing supplementary material 
 
-4.  **FIBOS-supp-fun.R**: R file containing auxiliary functions used by `FIBOS-supp.main.R`\
+4.  **FIBOS-supp-fun.R**: R file containing auxiliary functions used by `FIBOS-supp.main.R` 
 
 ## Package and Instalation details
 

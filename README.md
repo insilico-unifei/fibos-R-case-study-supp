@@ -24,15 +24,21 @@ FIBOS-R: <https://github.com/insilico-unifei/FIBOS-R.git>
 
 ## Authors
 
--   Carlos Silveira ([carlos.silveira\@unifei.edu.br](mailto:carlos.silveira@unifei.edu.br){.email})\
-    Herson Soares ([d2020102075\@unifei.edu.br](mailto:d2020102075@unifei.edu.br){.email})\
+-   Carlos Silveira ([carlos.silveira\@unifei.edu.br](mailto:carlos.silveira@unifei.edu.br))\
+    Herson Soares ([d2020102075\@unifei.edu.br](mailto:d2020102075@unifei.edu.br))\
     Institute of Technological Sciences,\
     Federal University of Itajubá,\
     Campus Itabira, Brazil.
 
--   João Romanelli ([joaoromanelli\@unifei.edu.br](mailto:joaoromanelli@unifei.edu.br){.email}) Institute of Applied and Pure Sciences, Federal University of Itajubá, Campus Itabira, Brazil.
+-   João Romanelli ([joaoromanelli\@unifei.edu.br](mailto:joaoromanelli@unifei.edu.br)) \
+    Institute of Applied and Pure Sciences, \
+    Federal University of Itajubá, \
+    Campus Itabira, Brazil.
 
--   Patrick Fleming ([Pat.Fleming\@jhu.edu](mailto:Pat.Fleming@jhu.edu){.email}) Thomas C. Jenkins Department of Biophysics, Johns Hopkins University, Baltimore, MD, USA
+-   Patrick Fleming ([Pat.Fleming\@jhu.edu](mailto:Pat.Fleming@jhu.edu)) \
+    Thomas C. Jenkins Department of Biophysics, \
+    Johns Hopkins University, \
+    Baltimore, MD, USA
 
 ## References
 

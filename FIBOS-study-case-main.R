@@ -28,11 +28,13 @@ library(furrr)
 library(tictoc)
 library(ggpubr)
 library(tictoc)
+library(effsize)
 
 
 # SOURCE OF AUXILIARY FUNCTIONS
 source("FIBOS-study-case-fun.R")
 
+# CHANGE CONDITIONALS TO 1 TO EXECUTE EACH STEP
 
 # DATA INPUT: 
 # If dataset is missing, download from the 1st sheet ("protein names") of the link below in 
@@ -191,7 +193,7 @@ if(0){
   
   # calculate OS at atom level in parallel with 8 cores
   tictoc::tic()
-  plan(multisession, workers = 8) #comment this line to serial
+  plan(multisession, workers = 8) # comment out this line for serial (not parallel) processing
   pdb.csm.fibos <- pdb.csm.tab.work$CSM.path.new |> future_map(occluded_surface, method = "FIBOS", 
                                                                .options = furrr_options(seed = 123))
   tictoc::toc()
@@ -231,7 +233,7 @@ if(0){
                      osp.af.sd = pdb.csm.osp |> map(\(x) sd(x$OSP)) |> unlist()
   )
   
-  # TOGGLE TO 1 TO SAVE IT
+  # SET TO 1 TO SAVE IT
   if(0) res.stat |> mutate(across(where(is.numeric), ~round(.x, 3))) |> 
         write_csv("data/osp-mean-sd-exp-af.csv")
 }
@@ -289,3 +291,19 @@ if(0){
   print(p12)
 
 }
+
+# SOME USEFUL STATISTICS
+if(0){
+  
+  wilcox.test(res.stat$osp.exp.mean, res.stat$osp.af.mean, paired = T)
+  ks.test(res.stat$osp.exp.mean, res.stat$osp.af.mean)
+  cohen.d(res.stat$osp.exp.mean, res.stat$osp.af.mean)
+  cohen.d(res.stat$osp.exp.mean, res.stat$osp.af.mean, hedges.correction=T)
+  
+  wilcox.test(res.stat$osp.exp.sd, res.stat$osp.af.sd, paired = T)
+  ks.test(res.stat$osp.exp.sd, res.stat$osp.af.sd)
+  cohen.d(res.stat$osp.exp.sd, res.stat$osp.af.sd)
+  cohen.d(res.stat$osp.exp.sd, res.stat$osp.af.sd, hedges.correction=T)
+  
+}
+

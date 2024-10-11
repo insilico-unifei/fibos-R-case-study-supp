@@ -159,12 +159,9 @@ if(0){
 
 # PREPARE PATH FOR SRF FILES THAT WILL BE USED TO CALCULATE OSP
 if(0){
-  path <- "data_exp_pdb"
-  pdb.csm.tab.work <- pdb.csm.tab.work |> mutate(SRF.path = gsub("/", "/prot_", PDB.path)) |> 
-                           mutate(SRF.path = gsub("\\.pdb",".srf", SRF.path)) |>
-                           mutate(SRF.path = gsub(path, "fibos_files", SRF.path)) |> 
-                           relocate(SRF.path, .after = CSM.path.new)
-
+  pdb.csm.tab.work<- pdb.csm.tab.work |> 
+                     mutate(SRF.path = path("fibos_files", paste0("prot_", PDB.ids), ext = "srf")) |> 
+                     relocate(SRF.path, .after = CSM.path.new)
 }
 
 # CALCULATE OCCLUDE SURFACE AT ATOM AND RESIDUE LEVEL FOR EXPERIMENTAL PDB

@@ -93,7 +93,7 @@ if(0){
   ss[[i]]$dotden.eff = dim(ss[[i]]$m_os)[1]/(4*pi*r^2)
 }
 
-# GENERATE NEW FIBOS DOT DISTRIBUTION (212 DOTS)
+# GENERATE NEW FIBOS DOT DISTRIBUTION (417 DOTS)
 if(0){
   m_fb2 = fibonaccisphere3(n = dim(ss[[i]]$m_os)[1], r = 1, eps = 0.5)
   m_fb2 = m_fb2 %>% as_tibble()
@@ -124,6 +124,9 @@ if(0){
   chrome_print(file_html, output = file_png, format = "png", timeout = 600)
   dir_delete(paste0(path(folder, filename),"_files"))
   file_delete(file_html)
+}
+
+if(0){
 
   # VORONOI FOR OS ROTATED BY 90 AT X AXIS (212 DOTS)
   ss[[i]]$m_os.rot = rotate3d(as.matrix(ss[[i]]$m_os), pi/2, 1, 0, 0)
@@ -136,7 +139,9 @@ if(0){
   chrome_print(file_html, output = file_png, format = "png", timeout = 600)
   dir_delete(paste0(path(folder, filename),"_files"))
   file_delete(file_html)
+}
 
+if(0){
   # VORONOI FOR FIBOS (212 DOTS)
   ss[[i]]$m_fb2.vor = VoronoiOnSphere(as.matrix(ss[[i]]$m_fb2))
   plotVoronoiOnSphere(ss[[i]]$m_fb2.vor, edges = T, specular = "black")
@@ -147,7 +152,9 @@ if(0){
   chrome_print(file_html, output = file_png, format = "png", timeout = 600)
   dir_delete(paste0(path(folder, filename),"_files"))
   file_delete(file_html)
-  
+}
+
+if(0){
   # VORONOI FOR FIBOS ROTATED BY 90 AT X AXIS (212 DOTS)
   ss[[i]]$m_fb2.rot = rotate3d(as.matrix(ss[[i]]$m_fb2), pi/2, 1, 0, 0)
   ss[[i]]$m_fb2.vor.rot = VoronoiOnSphere(as.matrix(ss[[i]]$m_fb2.rot))
@@ -159,7 +166,6 @@ if(0){
   chrome_print(file_html, output = file_png, format = "png", timeout = 600)
   dir_delete(paste0(path(folder, filename),"_files"))
   file_delete(file_html)
-  
 }
 
 # MAKE IMAGENS OF SUPPLEMENTARY FIGURE S1b OF THE ARTCILE

@@ -165,18 +165,23 @@ if(0){
 }
 
 # CALCULATE OCCLUDE SURFACE AT ATOM AND RESIDUE LEVEL FOR EXPERIMENTAL PDB
+# WARNING: This may take a while depending on your hardware configuration and the number of cores available
 if(0){
 
-  # calculate OS at atom level in parallel with 8 cores
+  # calculate OS at atom level in parallel with max cores available
   tic()
-  plan(multisession, workers = 8) #comment this line to serial
-  pdb.exp.fibos <- pdb.csm.tab.work$PDB.path |> future_map(occluded_surface, method = "FIBOS", 
+  my_default_mccores = getOption("mc.cores")
+  my_ideal_mccores = min(parallel::detectCores(), length(pdb.csm.tab.work$PDB.path))
+  if (my_ideal_mccores > 0) options(mc.cores = my_ideal_mccores)
+  if (my_ideal_mccores > 1) plan(multisession, workers = my_ideal_mccores)
+  pdb.exp.fibos <- pdb.csm.tab.work$PDB.path |> future_map(\(x) occluded_surface (x, method = "FIBOS"), 
                                                 .options = furrr_options(seed = 123))
+  if (my_ideal_mccores > 0) options(mc.cores = my_default_mccores)
   toc()
   names(pdb.exp.fibos) <- paste0(pdb.csm.tab.work$PDB.ids,"_exp")
   
   #calculate the OSP metric at the residue level
-  pdb.exp.osp <- pdb.csm.tab.work$SRF.path |> map(osp)
+  pdb.exp.osp <- pdb.csm.tab.work$SRF.path |> map(\(x) osp(x))
   names(pdb.exp.osp) <- paste0(pdb.csm.tab.work$PDB.ids,"_exp")
   
   # save the calculation files in the "fibos_files_pdb_exp" folder
@@ -190,14 +195,18 @@ if(0){
   
   # calculate OS at atom level in parallel with 8 cores
   tictoc::tic()
-  plan(multisession, workers = 8) # comment out this line for serial (not parallel) processing
-  pdb.csm.fibos <- pdb.csm.tab.work$CSM.path.new |> future_map(occluded_surface, method = "FIBOS", 
+  my_default_mccores = getOption("mc.cores")
+  my_ideal_mccores = min(parallel::detectCores(), length(pdb.csm.tab.work$CSM.path.new))
+  if (my_ideal_mccores > 0) options(mc.cores = my_ideal_mccores)
+  if (my_ideal_mccores > 1) plan(multisession, workers = my_ideal_mccores)
+  pdb.csm.fibos <- pdb.csm.tab.work$CSM.path.new |> future_map(\(x) occluded_surface(x, method = "FIBOS"), 
                                                                .options = furrr_options(seed = 123))
+  if (my_ideal_mccores > 0) options(mc.cores = my_default_mccores)
   tictoc::toc()
   names(pdb.csm.fibos) <- paste0(pdb.csm.tab.work$PDB.ids,"_af")
   
   #calculate the OSP metric at the residue level
-  pdb.csm.osp <- pdb.csm.tab.work$SRF.path |> map(osp)
+  pdb.csm.osp <- pdb.csm.tab.work$SRF.path |> map(\(x) osp(x))
   names(pdb.csm.osp) <- paste0(pdb.csm.tab.work$PDB.ids,"_af")
   
   # save the calculation files in the "fibos_files_pdb_exp" folder
@@ -212,11 +221,11 @@ if(0){
   
   file <- "study-case-osp-pdb-unique-tab.csv"
   pdb.exp.osp.uni <- pdb.exp.osp |> bind_rows(.id = "ID")
-  write_csv(pdb.exp.osp.uni, path(folder, file))
+  if(0) write_csv(pdb.exp.osp.uni, path(folder, file))
   
   file <- "study-case-osp-af-unique-tab.csv"
   pdb.csm.osp.uni <- pdb.csm.osp |> bind_rows(.id = "ID")
-  write_csv(pdb.csm.osp.uni, path(folder, file))
+  if(0) write_csv(pdb.csm.osp.uni, path(folder, file))
   
 }
 

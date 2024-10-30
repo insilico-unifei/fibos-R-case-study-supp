@@ -1,13 +1,13 @@
-# fibos-R Package Application Example
+# FIBOS Case Study
 
 ## Description
 
-fibos is a R package for estimating the packing density of biomolecules in R.
+FIBOS is an R and Python package designed to estimate the packing density of biomolecules.
 
-Here we show a case study, aiming to compare the packing density between experimentally 
-determined structures and the same structures predicted by AlphaFold (AF).
+In this case study, we perform in R a comparative analysis of packing densities between 
+experimentally determined structures and those predicted by AlphaFold (AF).
 
-We also show codes used in the production of the supplementary material of the article.
+Additionally, we include the codes used to generate the supplementary materials for the article.
 
 ## Files
 
@@ -19,9 +19,9 @@ We also show codes used in the production of the supplementary material of the a
 
 4.  **`FIBOS-supp-fun.R`**: R file containing auxiliary functions used by `FIBOS-supp.main.R` 
 
-## fibos R Package and Instalation details
+## FIBOS R Package and Instalation Details
 
-fibos: <https://github.com/insilico-unifei/fibos-R.git>
+FIBOS R: <https://github.com/insilico-unifei/fibos-R.git>
 
 ## Authors
 

@@ -19,9 +19,10 @@ Additionally, we include the codes used to generate the supplementary materials 
 
 4.  **`FIBOS-supp-fun.R`**: R file containing auxiliary functions used by `FIBOS-supp.main.R` 
 
-## R Package and Instalation Details
+## Packages and Instalation Details
 
-FIBOS R: <https://github.com/insilico-unifei/fibos-R.git>
+FIBOS R: <https://github.com/insilico-unifei/fibos-R.git> \
+FIBOS Python: <https://github.com/insilico-unifei/fibos-py.git>
 
 ## Authors
 

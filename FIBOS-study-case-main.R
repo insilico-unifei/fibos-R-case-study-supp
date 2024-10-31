@@ -19,7 +19,7 @@
 # install_github("https://github.com/insilico-unifei/FIBOS-R.git") 
 
 # LIBRARIES
-library(FIBOS)
+library(fibos)
 library(tidyverse)
 library(fs)
 library(httr)
@@ -168,7 +168,7 @@ if(0){
 # WARNING: This may take a while depending on your hardware configuration and the number of cores available
 if(0){
 
-  # calculate OS at atom level in parallel with max cores available
+  # calculate OS at atom level in parallel with max cores available according to PDB_ids size
   tic()
   my_default_mccores = getOption("mc.cores")
   my_ideal_mccores = min(parallel::detectCores(), length(pdb.csm.tab.work$PDB.path))
@@ -193,7 +193,7 @@ if(0){
 # CALCULATE OCCLUDE SURFACE AT ATOM AND RESIDUE LEVEL FOR AF MODELS
 if(0){
   
-  # calculate OS at atom level in parallel with 8 cores
+  # calculate OS at atom level in parallel with max cores available according to PDB_ids size
   tictoc::tic()
   my_default_mccores = getOption("mc.cores")
   my_ideal_mccores = min(parallel::detectCores(), length(pdb.csm.tab.work$CSM.path.new))
@@ -229,7 +229,7 @@ if(0){
   
 }
 
-# MAKE OPS STATISTICAL TABLE
+# MAKE OSP STATISTICAL TABLE
 if(0){
   
   res.stat <- tibble(ID = pdb.csm.tab.work$PDB.ids,

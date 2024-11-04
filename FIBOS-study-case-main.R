@@ -169,13 +169,13 @@ if(0){
 
   # calculate OS at atom level in parallel with max cores available according to PDB_ids size
   tic()
-  my_default_mccores = getOption("mc.cores")
-  my_ideal_mccores = min(parallel::detectCores(), length(pdb.csm.tab.work$PDB.path))
-  if (my_ideal_mccores > 0) options(mc.cores = my_ideal_mccores)
-  if (my_ideal_mccores > 1) plan(multisession, workers = my_ideal_mccores)
+  default_mccores <- getOption("mc.cores")
+  ideal_mccores <- min(parallel::detectCores(), length(pdb.csm.tab.work$PDB.path))
+  if (ideal_mccores > 0) options(mc.cores = ideal_mccores)
+  if (ideal_mccores > 1) plan(multisession, workers = ideal_mccores)
   pdb.exp.fibos <- pdb.csm.tab.work$PDB.path |> future_map(\(x) occluded_surface (x, method = "FIBOS"), 
                                                 .options = furrr_options(seed = 123))
-  if (my_ideal_mccores > 0) options(mc.cores = my_default_mccores)
+  if (ideal_mccores > 0) options(mc.cores = default_mccores)
   toc()
   names(pdb.exp.fibos) <- paste0(pdb.csm.tab.work$PDB.ids,"_exp")
   
@@ -194,13 +194,13 @@ if(0){
   
   # calculate OS at atom level in parallel with max cores available according to PDB_ids size
   tictoc::tic()
-  my_default_mccores = getOption("mc.cores")
-  my_ideal_mccores = min(parallel::detectCores(), length(pdb.csm.tab.work$CSM.path.new))
-  if (my_ideal_mccores > 0) options(mc.cores = my_ideal_mccores)
-  if (my_ideal_mccores > 1) plan(multisession, workers = my_ideal_mccores)
+  default_mccores <- getOption("mc.cores")
+  ideal_mccores <- min(parallel::detectCores(), length(pdb.csm.tab.work$CSM.path.new))
+  if (ideal_mccores > 0) options(mc.cores = ideal_mccores)
+  if (ideal_mccores > 1) plan(multisession, workers = ideal_mccores)
   pdb.csm.fibos <- pdb.csm.tab.work$CSM.path.new |> future_map(\(x) occluded_surface(x, method = "FIBOS"), 
                                                                .options = furrr_options(seed = 123))
-  if (my_ideal_mccores > 0) options(mc.cores = my_default_mccores)
+  if (ideal_mccores > 0) options(mc.cores = default_mccores)
   tictoc::toc()
   names(pdb.csm.fibos) <- paste0(pdb.csm.tab.work$PDB.ids,"_af")
   

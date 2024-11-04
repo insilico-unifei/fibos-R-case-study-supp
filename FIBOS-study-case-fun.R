@@ -14,8 +14,7 @@
 # CONTACTS: hersinsoares@gmail.com, carlos.silveira@unifei.edu.br
 #
 # FIBOS install on R:
-# library(devtools)
-# install_github("https://github.com/insilico-unifei/FIBOS-R.git") 
+# See tutorial here: https://github.com/insilico-unifei/fibos-R 
 
 # GET PDB METADATA FROM SOURCE URL AND PAR AND RETURN IT IN JSON FORMAT
 get_pdb_metadata <- function(pdb,

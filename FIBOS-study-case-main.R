@@ -15,8 +15,7 @@
 # CONTACTS: hersinsoares@gmail.com, carlos.silveira@unifei.edu.br
 #
 # FIBOS install on R:
-# library(devtools)
-# install_github("https://github.com/insilico-unifei/FIBOS-R.git") 
+# See tutorial here: https://github.com/insilico-unifei/fibos-R 
 
 # LIBRARIES
 library(fibos)
@@ -129,9 +128,9 @@ if(0){
   # filter main table to produce work table with difference between AF and Experimental less than 5 aa in size
   pdb.csm.tab.work <- pdb.csm.tab |> filter(abs(aaDIFF) < 5)
   
-  # create study case output table
+  # create case study output table
   if(0) write_csv(pdb.csm.tab.work |> mutate(across(where(is.list), as.character)), 
-                  file = "data/study-case-v1.csv")
+                  file = "data/case_study_v1.csv")
 }
 
 #FOR CONVENIENCE, CREATE FOLDER FOR AF FILE MODELS WITH SAME NAME OF FILE EXPERIMENTAL MODELS
@@ -219,11 +218,11 @@ if(0){
   
   folder <- "data"
   
-  file <- "study-case-osp-pdb-unique-tab.csv"
+  file <- "case-study-osp-pdb-unique-tab.csv"
   pdb.exp.osp.uni <- pdb.exp.osp |> bind_rows(.id = "ID")
   if(0) write_csv(pdb.exp.osp.uni, path(folder, file))
   
-  file <- "study-case-osp-af-unique-tab.csv"
+  file <- "case-study-osp-af-unique-tab.csv"
   pdb.csm.osp.uni <- pdb.csm.osp |> bind_rows(.id = "ID")
   if(0) write_csv(pdb.csm.osp.uni, path(folder, file))
   

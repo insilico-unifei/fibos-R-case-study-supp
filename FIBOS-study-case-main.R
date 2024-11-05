@@ -190,6 +190,7 @@ if(0){
 }
 
 # CALCULATE OCCLUDE SURFACE AT ATOM AND RESIDUE LEVEL FOR AF MODELS
+# WARNING: This may take a while depending on your hardware configuration and the number of cores available
 if(0){
   
   # calculate OS at atom level in parallel with max cores available according to PDB_ids size

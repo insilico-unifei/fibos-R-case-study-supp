@@ -359,23 +359,38 @@ display: none;
 <p>FIBOS is an R and Python package designed to estimate the packing
 density of biomolecules.</p>
 <p>In this case study, we perform in R a comparative analysis of packing
-densities between experimentally determined structures and those
+densities between experimentally determined structures (EXP) and those
 predicted by AlphaFold (AF).</p>
 <p>Additionally, we include the codes used to generate the supplementary
 materials for the article.</p>
 </div>
-<div id="files" class="section level2">
-<h2>Files</h2>
+<div id="r-files" class="section level2">
+<h2>R Files</h2>
 <ol style="list-style-type: decimal">
-<li><p><strong><code>FIBOS-study-case-main.R</code></strong>: Main R
-script used in the case study</p></li>
-<li><p><strong><code>FIBOS-study-case-fun.R</code></strong>: R file
+<li><p><strong><code>FIBOS-study-case-main-v2.R</code></strong>: Main R
+script used in the case study (version 2)</p></li>
+<li><p><strong><code>FIBOS-study-case-fun-v2.R</code></strong>: R file
 containing auxiliary functions used by
-<code>FIBOS-study-case.main.R</code></p></li>
+<code>FIBOS-study-case.main.R</code> (version 2)</p></li>
 <li><p><strong><code>FIBOS-supp-main.R</code></strong>: Main R script
 used for producing supplementary material</p></li>
 <li><p><strong><code>FIBOS-supp-fun.R</code></strong>: R file containing
 auxiliary functions used by <code>FIBOS-supp.main.R</code></p></li>
+</ol>
+</div>
+<div id="python-scripts-accessory" class="section level2">
+<h2>Python scripts (accessory)</h2>
+<ol style="list-style-type: decimal">
+<li><p><strong><code>get_raw_pdbs.py</code></strong>: download raw pdb
+ids</p></li>
+<li><p><strong><code>get_torsions.py</code></strong>: obtain the side
+chain chi angles in separated files</p></li>
+<li><p><strong><code>compare_chis2.py</code></strong>: Compares two
+output files from get_torsion.py</p></li>
+<li><p><strong><code>Frac_ASA.py</code></strong>: computes relative sasa
+for each residue using Shrake Rupley</p></li>
+<li><p><strong><code>sse_psea.py</code></strong>: annotates secondary
+structure via p-sea</p></li>
 </ol>
 </div>
 <div id="packages-and-instalation-details" class="section level2">

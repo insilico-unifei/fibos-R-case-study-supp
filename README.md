@@ -5,19 +5,31 @@
 FIBOS is an R and Python package designed to estimate the packing density of biomolecules.
 
 In this case study, we perform in R a comparative analysis of packing densities between 
-experimentally determined structures and those predicted by AlphaFold (AF).
+experimentally determined structures (EXP) and those predicted by AlphaFold (AF).
 
 Additionally, we include the codes used to generate the supplementary materials for the article.
 
-## Files
+## R Files
 
-1.  **`FIBOS-study-case-main.R`**: Main R script used in the case study 
+1.  **`FIBOS-study-case-main-v2.R`**: Main R script used in the case study (version 2) 
 
-2.  **`FIBOS-study-case-fun.R`**: R file containing auxiliary functions used by `FIBOS-study-case.main.R` 
+2.  **`FIBOS-study-case-fun-v2.R`**: R file containing auxiliary functions used by `FIBOS-study-case.main.R` (version 2)
 
 3.  **`FIBOS-supp-main.R`**: Main R script used for producing supplementary material 
 
 4.  **`FIBOS-supp-fun.R`**: R file containing auxiliary functions used by `FIBOS-supp.main.R` 
+
+## Python scripts (accessory)
+
+1.  **`get_raw_pdbs.py`**: download raw pdb ids
+
+2.  **`get_torsions.py`**: obtain the side chain chi angles in separated files 
+
+3.  **`compare_chis2.py`**: Compares two output files from get_torsion.py
+
+4.  **`Frac_ASA.py`**: computes relative sasa for each residue using Shrake Rupley
+
+5.  **`sse_psea.py`**: annotates secondary structure  via p-sea
 
 ## Packages and Instalation Details
 

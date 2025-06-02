@@ -14,7 +14,8 @@
 # CONTACTS: hersinsoares@gmail.com, carlos.silveira@unifei.edu.br
 #
 # FIBOS install on R:
-# See tutorial here: https://github.com/insilico-unifei/fibos-R 
+# install.packages("fibos")
+# See more here: https://github.com/insilico-unifei/fibos-R 
 
 
 # R VERSION FOR THE DISTRIBUTION OF DOTS ON THE SPHERE, ORIGINALLY CODED IN FORTRAN

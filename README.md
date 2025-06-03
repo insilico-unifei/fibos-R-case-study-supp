@@ -14,10 +14,11 @@ Additionally, we include the codes used to generate the supplementary materials 
 1.  **`FIBOS-study-case-main-v2.R`**: Main R script used in the case study (version 2) 
 
 2.  **`FIBOS-study-case-fun-v2.R`**: R file containing auxiliary functions used by `FIBOS-study-case.main.R` (version 2)
+3.  **`FIBOS-study-case-analysis.R`**: Main R script used for statistical and plotting analysis
 
-3.  **`FIBOS-supp-main.R`**: Main R script used for producing supplementary material 
+4.  **`FIBOS-supp-main.R`**: Main R script used for producing supplementary material 
 
-4.  **`FIBOS-supp-fun.R`**: R file containing auxiliary functions used by `FIBOS-supp.main.R` 
+5.  **`FIBOS-supp-fun.R`**: R file containing auxiliary functions used by `FIBOS-supp.main.R` 
 
 ## Python scripts (accessory)
 
@@ -25,11 +26,11 @@ Additionally, we include the codes used to generate the supplementary materials 
 
 2.  **`get_torsions.py`**: obtain the side chain chi angles in separated files 
 
-3.  **`compare_chis2.py`**: Compares two output files from get_torsion.py
+3.  **`compare_chis2.py`**: Compares two output files from `get_torsions.py`
 
-4.  **`Frac_ASA.py`**: computes relative sasa for each residue using Shrake Rupley
+4.  **`Frac_ASA.py`**: computes relative SASA for each residue using Shrake Rupley
 
-5.  **`sse_psea.py`**: annotates secondary structure  via p-sea
+5.  **`sse_psea.py`**: annotates secondary structure  via P-SEA
 
 ## Packages and Instalation Details
 

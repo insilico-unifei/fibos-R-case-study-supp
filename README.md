@@ -23,7 +23,7 @@ Additionally, we include the codes used to generate the supplementary materials 
 ## Python scripts (accessory)
 
 1.  **`get_raw_pdbs.py`**: download raw pdb ids
-
+a
 2.  **`get_torsions.py`**: obtain the side chain chi angles in separated files 
 
 3.  **`compare_chis2.py`**: Compares two output files from `get_torsions.py`

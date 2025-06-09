@@ -17,7 +17,7 @@
 # install.packages("fibos")
 # See more here: https://github.com/insilico-unifei/fibos-R 
 
-# GET PDB METADATA FROM SOURCE URL AND PAR AND RETURN IT IN JSON FORMAT
+# GETS PDB METADATA FROM SOURCE URL AND PAR AND RETURNS IT IN JSON FORMAT
 get_pdb_metadata <- function(pdb,
                              source,
                              par = "",
@@ -50,7 +50,7 @@ get_pdb_metadata <- function(pdb,
   
 }
 
-# GET UNIPROT ID FROM PDB METADATA
+# GETS UNIPROT ID FROM PDB METADATA
 get_pdb_uniprot_id <- function(data, verbose = T) {
   
   #browser()
@@ -85,7 +85,7 @@ get_pdb_uniprot_id <- function(data, verbose = T) {
   return(unlist(uniprot.id))
 }
 
-# GET AA SEQUENCE FROM PDB METADATA
+# GETS AA SEQUENCE FROM PDB METADATA
 get_pdb_aa_seq <- function(data, verbose = T){
   
   # get pdb id from metadata
@@ -100,7 +100,7 @@ get_pdb_aa_seq <- function(data, verbose = T){
   
 }
 
-# DOWNLOAD AF IN PDB FORMAT AND RETURN AF PATHs
+# DOWNLOADS AF IN PDB FORMAT AND RETURNS AF PATHS
 get_csm <- function(csm.id, 
                     source = "https://alphafold.ebi.ac.uk/files/",
                     path = "",
@@ -146,7 +146,7 @@ get_csm <- function(csm.id,
   }
 }
 
-# GET SOME EXPERIMENTAL PDB PARAMETERS LIKE TITLE, RESOLUTION, R_FACTORS
+# GETS SOME EXPERIMENTAL PDB PARAMETERS LIKE TITLE, RESOLUTION, AND R_FACTORS
 get_pdb_info = function(pdb, k = 2){
   
   aux = get_info(pdb)
@@ -163,7 +163,7 @@ get_pdb_info = function(pdb, k = 2){
 }
 
 
-# RETURN A TIBBLE TABLE INDICATING POSSIBLE PDB WITH MISSING RESIDUES
+# RETURNS A TIBBLE TABLE INDICATING POSSIBLE PDBS WITH MISSING RESIDUES
 verify_missing_residues = function(pdb, pdbid){
   
   #pdbid <- read.pdb(pdb.path, verbose = FALSE, rm.alt = FALSE)
@@ -189,7 +189,7 @@ verify_missing_residues = function(pdb, pdbid){
   return(res_tab)
 }
 
-# GET SSE INFORMATION USING DSSP
+# GETS SSE INFORMATION USING DSSP
 get_pdb_sse <-  function(pdb, pdb.path, exefile = "/usr/bin/dssp", 
                        a = c("G","H","I"), b = c("B","E"), k = 0){
   
@@ -209,7 +209,7 @@ get_pdb_sse <-  function(pdb, pdb.path, exefile = "/usr/bin/dssp",
   return(res)
 }
 
-# GET SSE INFORMATION USING P-SEA
+# GETS SSE INFORMATION USING P-SEA
 get_sse_psea <- function(pdb, pdb_path,
                          python_cmd = "python3",
                          script     = "sse_psea.py") {
@@ -226,8 +226,8 @@ get_sse_psea <- function(pdb, pdb_path,
   return(res)
 }
 
-# ADAPTED DSSP FUNCTION FROM BIO3D
-# (Need dssp installed in SO)
+# ADAPTED DSSP FUNCTION FROM BIO3D  
+# (REQUIRES DSSP INSTALLED IN THE OPERATING SYSTEM)
 dssp_adapted = function (pdb, pdb.path, exefile = "/usr/bin/dssp", par = "--output-format=dssp", 
                     resno = TRUE, full = FALSE, verbose = FALSE, ...) 
 {
@@ -492,14 +492,14 @@ dssp_adapted = function (pdb, pdb.path, exefile = "/usr/bin/dssp", par = "--outp
   return(out)
 }
 
-# ADD PDB-ID AS ATTR
+# ADDS PDB_ID AS ATTRIBUTE (ATTR)
 add_attr = function(m, value, attr){
   #browser()
   attr(m, attr) <- value
   return(m)
 }
 
-# FILTER RES ID LESS THAN ZERO
+# FILTERS RESIDUE IDS LESS THAN ZERO
 filter_fibos_id_zero = function(m, colres, pdbid, debug_column ="ATOM"){
   
   #browser()
@@ -515,7 +515,7 @@ filter_fibos_id_zero = function(m, colres, pdbid, debug_column ="ATOM"){
   return(m)
 }
 
-# RECOVER RESIDUE ID INFORMATIONS FROM ORIGINAL PDB 
+# RECOVERS RESIDUE ID INFORMATION FROM ORIGINAL PDB
 adjust_osp_table = function(m, pdb,
                             atom.type = "ATOM",
                             resname = c("Resnum"),
@@ -558,7 +558,7 @@ adjust_osp_table = function(m, pdb,
   return(m) 
 }
 
-# GET SIDE CHAIN CHI ANGLES VIA PYTHON SCRIPT
+# GETS SIDE CHAIN CHI ANGLES VIA PYTHON SCRIPT
 get_torsions_py <- function(pdb, folder_in, folder_out, 
                                   script_path = "get_torsions.py", chis = "-c 1 2 3 4 5",
                                   venv = ".venv",
@@ -583,9 +583,9 @@ get_torsions_py <- function(pdb, folder_in, folder_out,
   system2(python_venv, args = c(script_path, args))
 }
 
-# COMPUTES CHI ANGLE DIFFERENCES BETWEEN TWO PDB TORSION FILES AND CALCULATES ANGLE DIFFS
-# WRITES RESULTS FOR CHI1–CHI5 AND ALT CHI ANGLES TO SEPARATE OUTPUT DAT FILES
-# REUNITE THEM IN A TIBBLE
+# COMPUTES CHI ANGLE DIFFERENCES BETWEEN TWO PDB TORSION FILES AND CALCULATES ANGLE DIFFS  
+# WRITES RESULTS FOR CHI1–CHI5 AND ALT CHI ANGLES TO SEPARATE OUTPUT DAT FILES  
+# REUNITES THEM IN A TIBBLE
 compare_chis_py <- function(pdb, folder_exp, folder_csms, chi_files,
                             script_path = "compare_chis2.py",
                             venv = ".venv",
@@ -620,9 +620,9 @@ compare_chis_py <- function(pdb, folder_exp, folder_csms, chi_files,
   return(tor_tab)
 }
 
-# CREATES PYTHON VENV IN SPECIFIED DIR AND INSTALLS REQUIREMENTS.
-# HANDLES OS DIFFERENCES TO LOCATE PIP EXECUTABLE.
-# VALIDATES PRESENCE OF PIP AND REQUIREMENTS FILE.
+# CREATES PYTHON VENV IN SPECIFIED DIRECTORY AND INSTALLS REQUIREMENTS  
+# HANDLES OS DIFFERENCES TO LOCATE PIP EXECUTABLE  
+# VALIDATES PRESENCE OF PIP AND REQUIREMENTS FILE
 prepair_python_venv <- function(folder.venv, 
                                 python_exe = "python3",
                                 pip_exe = "pip",
@@ -653,7 +653,7 @@ prepair_python_venv <- function(folder.venv,
 
 }
 
-# INVOKES PYTHON SCRIPT WITHIN VENV TO DOWNLOAD RAW PDB IDs TO 
+# INVOKES PYTHON SCRIPT WITHIN VENV TO DOWNLOAD RAW PDB IDS TO  
 # SPECIFIC PATH IN "file".
 get_raw_pdbs_py <- function(file,
                             script_path = "get_raw_pdbs.py",
@@ -682,8 +682,8 @@ get_raw_pdbs_py <- function(file,
 }
 
 
-# COMPUTES RELATIVE SASA FOR EACH RESIDUE USING SHRAKE RUPLEY.
-# NORMALIZES BY MAX AMINO ACID SASA FROM TIEN ET AL. 2013.
+# COMPUTES RELATIVE SASA FOR EACH RESIDUE USING SHRAKE-RUPLEY  
+# NORMALIZES BY MAX AMINO ACID SASA FROM TIEN ET AL. 2013
 frac_asa_py <- function(pdb, folder_in, folder_out, 
                         script_path = "Frac_ASA.py",
                         venv = ".venv",
@@ -721,9 +721,9 @@ frac_asa_py <- function(pdb, folder_in, folder_out,
   return(res)  
 }
 
-# CLEANS PDB ATOM RECORDS BY FILTERING OUT HYDROGENS, HETEROATOMS AND UNWANTED RESIDUES.
-# RENAMES SPECIFIC RESIDUE/TAG LABELS (E.G., HSD/HSE TO HIS, OT1 TO O, OT2 TO OXT).
-# ADJUSTS CHAIN/RESIDUE COLUMNS (LIKE THAT INVOLVED IN OCCUPANCIES).
+# CLEANS PDB ATOM RECORDS BY FILTERING OUT HYDROGENS, HETEROATOMS, AND UNWANTED RESIDUES  
+# RENAMES SPECIFIC RESIDUE/TAG LABELS (E.G., HSD/HSE TO HIS, OT1 TO O, OT2 TO OXT)  
+# ADJUSTS CHAIN/RESIDUE COLUMNS (LIKE THOSE INVOLVED IN OCCUPANCIES)
 clean_pdb2 = function(name_file, name_new_file = "temp1.cln", i = 0){
   
   #browser()
@@ -781,8 +781,8 @@ clean_pdb2 = function(name_file, name_new_file = "temp1.cln", i = 0){
   close(con)
 }
 
-# ALIGN TWO PDB SEQUENCES INTO A MULTIPLE SEQUENCE ALIGNMENT (DEFAULT CLUSTALW).
-# OPTIONALLY SAVES ALIGNMENT PDF AND RETURNS THE MSA AAStringSet OBJECT.
+# ALIGNS TWO PDB SEQUENCES INTO A MULTIPLE SEQUENCE ALIGNMENT (DEFAULT: CLUSTALW)  
+# OPTIONALLY SAVES ALIGNMENT PDF AND RETURNS THE MSA AASTRINGSET OBJECT
 align_pdbs <- function(pdb1, pdb2, method = "ClustalW",
                        folder_mca = "MCA", save_align = FALSE){
   
@@ -804,8 +804,8 @@ align_pdbs <- function(pdb1, pdb2, method = "ClustalW",
   return(aaligned_msa)
 }
 
-# GENERATES MSA PDF FOR GIVEN PDB_ID AND MOVES IT TO folder_mca.
-# REMOVES TEMPORARY TEX FILE CREATED BY msaPrettyPrint.
+# GENERATES MSA PDF FOR GIVEN PDB_ID AND MOVES IT TO FOLDER_MCA  
+# REMOVES TEMPORARY TEX FILE CREATED BY MSAPRETTYPRINT
 print_alignment <- function(PDB_ID, aaligned_msa, folder_mca, suffix = ""){
 
   if (!dir.exists(folder_mca)) dir_create(folder_mca)
@@ -816,9 +816,9 @@ print_alignment <- function(PDB_ID, aaligned_msa, folder_mca, suffix = ""){
   file.remove(file)
 }
 
-# ALIGNS TWO PDB SEQUENCES, IDENTIFIES CONSENSUS REGION, AND TRIMS ATOMS ACCORDINGLY.
-# VALIDATES MATCHED RESIDUES AND DIMENSIONS; RETURNS FALSE ON MISMATCH WITH OPTIONAL LOGGING.
-# OPTIONALLY SAVES TRIMMED PDB FILES TO SPECIFIED DIRECTORIES.
+# ALIGNS TWO PDB SEQUENCES, IDENTIFIES CONSENSUS REGION, AND TRIMS ATOMS ACCORDINGLY  
+# VALIDATES MATCHED RESIDUES AND DIMENSIONS; RETURNS FALSE ON MISMATCH WITH OPTIONAL LOGGING  
+# OPTIONALLY SAVES TRIMMED PDB FILES TO SPECIFIED DIRECTORIES
 align_and_save_pdb2 <- function(pdb1, pdb2, folder1, folder2, method = "ClustalW",
                              folder_mca = "MCA", log = FALSE, save = FALSE){
   
@@ -877,7 +877,7 @@ align_and_save_pdb2 <- function(pdb1, pdb2, folder1, folder2, method = "ClustalW
   #browser()
 }
 
-# SAVE ALIGNED PDBs
+# SAVES ALIGNED PDBS
 save_pdb_aligned <- function(alignment, pdb, folder){
   
   browser()
@@ -889,7 +889,7 @@ save_pdb_aligned <- function(alignment, pdb, folder){
   pdb <- pdb |>  trim.pdb(inds = inds)
 }
 
-# READ SRF FILES (OS BY ATOM)
+# READS SRF FILES (OS BY ATOM)
 read_prot2 = function(file, verbose=FALSE){
   if(verbose) print(file)
   #browser()
@@ -1019,7 +1019,8 @@ general_plot <- function(m, var1, var2, var3, var4, labs, size = 0.1, method = N
   
 }
 
-
+# COMPUTES BOOTSTRAPPED DIFFERENCE OR RATIO OF A STATISTIC (DEFAULT: VARIANCE)  
+# BETWEEN TWO GROUPS FROM A SPLIT DATA SAMPLE
 boot_fun <- function(split, fun = var, form = c("diff", "ratio")){
   
   #browser()
@@ -1086,9 +1087,9 @@ set_influential <- function(m, v, fun, cols, rev, k = 3, flag = "INFLUENTIAL", v
   return(m)
 }
 
-# FLAGS INFLUENTIAL RESIDUES BASED ON COMPARISON OF OSP VALUES AND SQDIFF.
-# CHOOSES OSP.CSM OR OSP.EXP COLUMN DEPENDING ON V COMPARISON.
-# CALLS set_influential WITH REVERSE FLAG AS NEEDED TO MARK RESIDUES.
+# FLAGS INFLUENTIAL RESIDUES BASED ON COMPARISON OF OSP VALUES AND SQDIFF  
+# CHOOSES OSP.CSM OR OSP.EXP COLUMN DEPENDING ON V COMPARISON  
+# CALLS SET_INFLUENTIAL WITH REVERSE FLAG AS NEEDED TO MARK RESIDUES
 set_influential_res <- function(m, v, fun = sd, k = 3, flag = "INFLUENTIAL", 
                                    cols = c("OSP.sqdiff", "Influential_score")){
   
@@ -1107,7 +1108,7 @@ set_influential_res <- function(m, v, fun = sd, k = 3, flag = "INFLUENTIAL",
   }
 }
 
-# DEFINE LABEL ACCORDING TO DIFFERENCES IN METRICS V IN CSM AND EXP
+# DEFINES LABEL ACCORDING TO DIFFERENCES IN METRICS V IN CSM AND EXP
 set_pack_type <- function(m, v, k = 3){
   
   v <- round(v, k)

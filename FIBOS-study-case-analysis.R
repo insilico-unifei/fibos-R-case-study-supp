@@ -172,7 +172,7 @@ if(0){
 }
 
 
-# MAKE PLOT OF SI FIGURE S6A S6B
+# MAKES PLOT OF SI FIGURES S6A AND S6B
 if(0){
 
   stat <- db.strict |> select(PDB_ID, starts_with("osp")) 
@@ -238,7 +238,7 @@ if(0){
     guides(linetype = guide_legend(keywidth = 3))
 }
 
-# MAKE PLOT OF SI FIGURE S6C S6D
+# MAKES PLOT OF SI FIGURES S6C AND S6D
 if(0){
   tag_pos = c(0.3, 1.02)
   stat <- db.strict.clean |> select(PDB_ID, starts_with("osp")) 
@@ -318,7 +318,7 @@ if(0){
   print(pa2ab2)
 }
 
-# MAKE PLOT OF SI FIGURE S8A
+# MAKES PLOT OF SI FIGURE S8A
 if(0){
   db.ana <- db.extend |> select(PDB_ID, !contains("path")) |> select(!contains(".id")) |> 
     select(!c(TITLE, n_SEQRES, n_SEQAF)) |> 
@@ -519,7 +519,7 @@ if(0){
   #print(pp13)
 }
 
-# MAKE PLOT OF SI FIGURE S7
+# MAKES PLOT OF SI FIGURE S7
 if(0){
   v <- c(1.2,0,1.2,0.4)
   pp1 <- pp1 + theme(plot.margin = unit(v, "cm"))
@@ -531,7 +531,7 @@ if(0){
   print(ppa)
 }
 
-# MAKE PLOT OF MAIN TEXT FIGURE 1B (PART OF IT)
+# MAKES PLOT OF MAIN TEXT FIGURE 1B (PART OF IT)
 if(0){
   v <- c(0.8,0.0,0.5,0.0)
   pp11 <- pp11 + theme(plot.margin = unit(v, "cm"))
@@ -542,7 +542,7 @@ if(0){
   print(ppc1)
 }
 
-# MAKE PLOT OF SI FIGURE S10
+# MAKES PLOT OF SI FIGURE S10
 if(0){
   df <- osp.res |> filter(Position.exp == "CORE") |> group_by(PDB_ID) |> summarise(OSP.exp = mean(OSP.exp))
   y.stat <- t.test(df$OSP.exp, conf.level = 0.95)
@@ -640,7 +640,7 @@ if(0){
   print(pb8fg)
 }
 
-# FORMAT IMAGE OF SI FIGURE S9
+# FORMATS IMAGE OF SI FIGURE S9
 if(0){
   imgA <- image_read("Figs/PUB/1PZ4-pub-v1h.png")
   imgB <- image_read("Figs/PUB/1PZ4-pub-v2h.png")
@@ -654,7 +654,7 @@ if(0){
   image_write(final, "Figs/PUB/1PZ4-pub-v12h.png")
 }
 
-# RE-ADJUST PLOT OF MAIN TEXT FIGURE 1B
+# READJUSTS PLOT OF MAIN TEXT FIGURE 1B
 if(0){
   source("FIBOS-case-study-expanded-more-fun.R")
   y <- "Position.csm"
@@ -690,7 +690,8 @@ if(0){
          width = 6.857, height = 4.571, dpi = 350, units = "in")
 }
 
-# FORMAT ALL FIGURE 1 OF THE MAIN TEXT
+# FORMATS ALL PANELS OF FIGURE 1 FROM THE MAIN TEXT
+
 if(0){
   img1 <- image_read("Figs/PUB/1ubq-v1a.png")
   img2 <- image_read("Figs/PUB/1ubq-v2a.png")

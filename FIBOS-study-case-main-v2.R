@@ -65,18 +65,18 @@ source("FIBOS-case-study-expanded-more-fun.R")
 # CHANGE CONDITIONALS TO 1 TO EXECUTE STEP BY STEP
 
 
-# SET UP VENV AND INSTALL DEPENDENCIES FOR PYTHON SCRIPTS
-# AUXILIARY FUNCTIONS:
-# prepair_python_venv: creates python venv in specified dir and installs 
+# SETS UP VENV AND INSTALLS DEPENDENCIES FOR PYTHON SCRIPTS  
+# AUXILIARY FUNCTIONS:  
+# prepare_python_venv: creates Python venv in specified directory and installs  
 # requirements
 if(0){
   folder.venv <- ".venv"
   prepair_python_venv(folder.venv)
 }
 
-# CALL GET_RAW_PDBS_PY WITH SPECIFIED CSV TO DOWNLOAD PDB IDS.
-# AUXILIARY FUNCTIONS:
-# get_raw_pdbs_py: invokes python script within venv to download raw pdb ids
+# CALLS GET_RAW_PDBS_PY WITH SPECIFIED CSV TO DOWNLOAD PDB IDS  
+# AUXILIARY FUNCTIONS:  
+# get_raw_pdbs_py: invokes Python script within venv to download raw PDB IDs
 if(0){
   folder <- "data" # data reference folder
   if (!dir.exists(folder)) dir_create(folder)
@@ -86,7 +86,7 @@ if(0){
 }
 
 
-# READ CSV OF RAW PDB IDS
+# READS CSV OF RAW PDB IDS
 if(0){ 
   folder <- "data"
   filename <- "pdb_raw_base.csv"  
@@ -96,7 +96,7 @@ if(0){
 }
 
 
-# DOWNLOAD EXPERIMENTAL PDB FROM IDs IN DB.RAW AND RETURN PDB PATHs
+# DOWNLOADS EXPERIMENTAL PDBS FROM IDS IN DB.RAW AND RETURNS PDB PATHS
 if(0){
   folder <- "data_exp_pdb" # experimental PDB output folder
   if (!dir.exists(folder)) dir_create(folder)
@@ -116,10 +116,10 @@ if(0){
   }
 }
 
-# FILTER PDB WITHOUT MISSING RESIDUES IN THE MIDDLE OF THE CHAIN
-# AUXILIARY FUNCTIONS:
-# verify_missing_residues: return a table indicating possible missing residues in PDB
-# get_pdb_info: get some experimental pdb parameters like title, resolution, r_factors
+# FILTERS PDBS WITHOUT MISSING RESIDUES IN THE MIDDLE OF THE CHAIN  
+# AUXILIARY FUNCTIONS:  
+# verify_missing_residues: returns a table indicating possible missing residues in PDB  
+# get_pdb_info: gets some experimental PDB parameters like title, resolution, r_factors
 if(0){
   pdb.bio3d <- pdb.path.raw[pdb.get.ok] |> map(\(x) bio3d::read.pdb(x, verbose = FALSE))
   pdb.res.miss <- pdb.bio3d |> map2_dfr(pdb.ids.raw[pdb.get.ok], \(x,y) verify_missing_residues(x,y))
@@ -131,10 +131,10 @@ if(0){
   pdb.bio3d <- pdb.bio3d[pdb.res.ok]
 }
 
-# GET METADATA: UNIPROT ID AND AMINO ACID SEQUENCE OF EXPERIMENTAL MODELS
-# AUXILIARY FUNCTIONS:
-# get_pdb_metadata: get pdb metadata from source url and par
-# get_pdb_uniprot_id: get uniprot id from pdb metadata
+# GETS METADATA: UNIPROT ID AND AMINO ACID SEQUENCE OF EXPERIMENTAL MODELS  
+# AUXILIARY FUNCTIONS:  
+# get_pdb_metadata: gets PDB metadata from source URL and PAR  
+# get_pdb_uniprot_id: gets UniProt ID from PDB metadata
 if(0){
   source <- "https://data.rcsb.org/rest/v1/core/polymer_entity/"
   par <- "/1"
@@ -146,7 +146,7 @@ if(0){
   pdb.bio3d <- pdb.bio3d[uniprot.ok]
 }
 
-# FORM CSM-AF NAMES FROM UNIPROT IDs
+# FORMS CSM-AF NAMES FROM UNIPROT IDS
 if(0){
   # for access to the AF website
   prefix <- "AF-"
@@ -158,9 +158,9 @@ if(0){
   db$csm.rcsb.id <- db$uniprot.id |>  map(\(x) paste0(prefix, x, suffix)) |> unlist()
 }
 
-# DOWNLOAD PREDICTED AF AND RETURN AF PATHs
-# AUXILIARY FUNCTIONS:
-# get_csm: download AF in PDB format and return AF paths
+# DOWNLOADS PREDICTED AF AND RETURNS AF PATHS  
+# AUXILIARY FUNCTIONS:  
+# get_csm: downloads AF in PDB format and returns AF paths
 if(0){
   folder <- "data_csm" # AF output folder
   if (!dir.exists(folder)) dir_create(folder)
@@ -172,7 +172,7 @@ if(0){
   pdb.bio3d <- pdb.bio3d[csm.ok]
 }
 
-# GET AF METADATA AND AMINO ACID SEQUENCE OF AF MODELS
+# GETS AF METADATA AND AMINO ACID SEQUENCE OF AF MODELS
 if(0){
   source <- "https://data.rcsb.org/rest/v1/core/polymer_entity/"
   par <- "/1"
@@ -191,10 +191,10 @@ if(0){
   db <- db |> relocate(n_SEQAF, .after = "n_SEQRES")
 }
 
-# CALCULATES SEQDIFF, CREATES CLEANED EXP AND CSM PDB DIRECTORIES AND FILES
-# READS CLEANED PDB FILES WITH BIO3D AND ADDS PDB_ID ATTRIBUTE
-# AUXILIARY FUNCTIONS:
-# clean_pdb2: cleans pdb atom records by filtering out hydrogens, heteroatoms and 
+# CALCULATES SEQDIFF, CREATES CLEANED EXP AND CSM PDB DIRECTORIES AND FILES  
+# READS CLEANED PDB FILES WITH BIO3D AND ADDS A PDB_ID ATTRIBUTE  
+# AUXILIARY FUNCTIONS  
+# clean_pdb2: cleans PDB atom records by filtering out hydrogens, heteroatoms, and  
 # unwanted residues.
 if(0){
   db <- db |> mutate(n_SEQDIFF = abs(n_SEQAF-n_SEQSTR)) |> relocate(n_SEQDIFF, .after = "n_SEQAF")
@@ -214,10 +214,10 @@ if(0){
   csm.bio3d.cls.work.preali <- csm.bio3d.cls.work.preali |> map2(db.work$PDB_ID, \(x,y) add_attr(x, y, "PDB"))
 }
 
-# CREATE EXP AND CSM ALIGNMENT FOLDERS AND ALIGN PDB PAIRS WITH LOGGING.
-# FILTER SUCCESSFUL ALIGNMENTS, UPDATE FILE PATHS AND READ ALIGNED PDBS
-# AUXILIARY FUNCTIONS:
-# align_and_save_pdb2: aligns two pdb sequences, identifies consensus region, and 
+# CREATES EXP AND CSM ALIGNMENT FOLDERS AND ALIGNS PDB PAIRS WITH LOGGING  
+# FILTERS SUCCESSFUL ALIGNMENTS, UPDATES FILE PATHS, AND READS ALIGNED PDBS  
+# AUXILIARY FUNCTIONS:  
+# align_and_save_pdb2: aligns two PDB sequences, identifies consensus region, and  
 # trims atoms accordingly
 if(0){
   folder_exp <- "data_exp_pdb_cls_ali"
@@ -241,7 +241,7 @@ if(0){
   csm.bio3d.cls.ali.work <- csm.bio3d.cls.ali.work |> map2(db.work$PDB_ID, \(x,y) add_attr(x, y, "PDB"))
 }
 
-# COMPUTES SSE FOR SELECTED PDBS AND CALCULATES GLOBAL pLDDT.
+# COMPUTES SSE FOR SELECTED PDBS AND CALCULATES GLOBAL PLDDT
 if(0){
   pdb.sse <- pdb.bio3d[db$PDB_ID %in% db.work$PDB_ID]|> map2_dfr(db.work$PDB.path, \(x,y) get_pdb_sse(x,y)) 
   db.work <- db.work |> left_join(pdb.sse, by = "PDB_ID") 
@@ -253,7 +253,7 @@ if(0){
 }
 
 
-# PREPARE PATH FOR SRF FILES THAT WILL BE USED TO CALCULATE OSP
+# PREPARES PATH FOR SRF FILES THAT WILL BE USED TO CALCULATE OSP
 if(0){
   folder_fibos <- "fibos_files"
   db.work <- db.work |> mutate(SRF.path = path(folder_fibos, paste0("prot_", PDB_ID), ext = "srf")) |> 
@@ -266,14 +266,14 @@ if(0){
              relocate(CSM.srf.path, .after = CSM.cls.ali.path)
 }
 
-# SAVE DB.WORK TO CSV
+# SAVES DB.WORK TO CSV
 if(0){
   folder <- "data"
   file <- "db-work-ali-v2.csv"
   db.work |> write_csv(path(folder,file))
 }
 
-# FILTERS SOME PROBLEMATIC PDBS
+# FILTERS OUT SOME PROBLEMATIC PDBS
 if(0){
   exclude <- c("1FCX", "1BKR", "5EHA", "7EV5", "7NMQ")
   fibos.ok <- !(str_detect(db.work$SRF.path, paste(exclude, collapse = "|")))
@@ -282,8 +282,10 @@ if(0){
   csm.bio3d.cls.ali.work <- csm.bio3d.cls.ali.work[fibos.ok]
 }
 
-# CALCULATE OCCLUDE SURFACE AT ATOM AND RESIDUE LEVEL FOR EXPERIMENTAL PDB
-# WARNING: This may take a while depending on your hardware configuration and the number of cores available
+# CALCULATES OCCLUDED SURFACE AT ATOM AND RESIDUE LEVEL FOR EXPERIMENTAL PDB  
+# WARNING: THIS MAY TAKE A WHILE DEPENDING ON YOUR HARDWARE CONFIGURATION AND 
+# THE NUMBER OF CORES AVAILABLE
+
 if(0){
 
   fibos.exp.ok <- db.work$SRF.path |> file_exists()
@@ -300,8 +302,8 @@ if(0){
   fibos.exp.ok <- db.work$SRF.path |> file_exists()
 }
 
-# VERIFY EXP FIBOS RESULTS AND STOP ON ERRORS.
-# IF ALL SUCCESSFUL, PRINT MESSAGE AND RENAME fibos_files FOLDER.
+# VERIFIES EXP FIBOS RESULTS AND STOPS ON ERRORS  
+# IF ALL ARE SUCCESSFUL, PRINTS MESSAGE AND RENAMES FIBOS_FILES FOLDER
 if(0){
   if (exists("aux")) rm(aux)
   pdb.exp.probs <- db.work$PDB_ID[!fibos.exp.ok]
@@ -322,8 +324,9 @@ if(0){
   # csm.bio3d.cls.ali.work <- csm.bio3d.cls.ali.work[fibos.exp.ok]
 }
 
-# CALCULATE OCCLUDE SURFACE AT ATOM AND RESIDUE LEVEL FOR AF MODELS
-# WARNING: This may take a while depending on your hardware configuration and the number of cores available
+# CALCULATES OCCLUDED SURFACE AT ATOM AND RESIDUE LEVEL FOR AF MODELS  
+# WARNING: THIS MAY TAKE A WHILE DEPENDING ON YOUR HARDWARE CONFIGURATION AND 
+# THE NUMBER OF CORES AVAILABLE
 if(0){
   
   fibos.csm.ok <- db.work$SRF.path |> file_exists()
@@ -340,8 +343,8 @@ if(0){
   fibos.csm.ok <- db.work$SRF.path |> file_exists()
 }
 
-# VERIFY CSM FIBOS RESULTS AND STOP ON ERRORS.
-# IF ALL SUCCESSFUL, PRINT MESSAGE AND RENAME fibos_files FOLDER.
+# VERIFIES CSM FIBOS RESULTS AND STOPS ON ERRORS  
+# IF ALL ARE SUCCESSFUL, PRINTS MESSAGE AND RENAMES fibos_files FOLDER
 if(0){
   if (exists("aux")) rm(aux)
   pdb.csm.probs <- db.work$PDB_ID[!fibos.csm.ok]
@@ -359,10 +362,10 @@ if(0){
   }
 }
 
-# LOADS PROTEIN FIBOS FOR EXP AND CSM STRUCTURES AND CALCULATES RESIDUE-LEVEL 
-# OSP METRICS.
-# AUXILIARY FUNCTIONS:
-#read_prot2: read srf files (os by atom)
+# LOADS PROTEIN FIBOS FOR EXP AND CSM STRUCTURES AND CALCULATES RESIDUE-LEVEL  
+# OSP METRICS  
+# AUXILIARY FUNCTIONS:  
+# read_prot2: reads SRF files (OS by atom)
 if(0){
   pdb.exp.fibos <- db.work$PDB.srf.path |> map(\(x) read_prot2(x))
   names(pdb.exp.fibos) <- paste0(db.work$PDB_ID,"_exp")
@@ -376,7 +379,7 @@ if(0){
   names(pdb.csm.osp) <- paste0(db.work$PDB_ID,"_csm")
 }
 
-# CHECK INCONSISTENCIES INVOLVING PLDDT, EXP AND CSM SIZES, RESIDUE MATCHING
+# CHECKS INCONSISTENCIES INVOLVING PLDDT, EXP AND CSM SIZES, AND RESIDUE MATCHING
 if(0){
   f1 <- db.work$pLDDT_global > 0
   x = pdb.exp.osp |> map_int(\(x) dim(x)[1])
@@ -393,10 +396,10 @@ if(0){
   csm.bio3d <- csm.bio3d.cls.ali.work[final.ok]
 }
 
-# COMPUTES MEAN B-FACTORS FOR EXP AND CSM STRUCTURES INTO LISTS. IN CSM B-FACTORS
-# WILL BE PLDDT
-# AUXILIARY FUNCTIONS:
-# get_mean_b_factor: calculates mean b-factor per residue from atom table.
+# COMPUTES MEAN B-FACTORS FOR EXP AND CSM STRUCTURES INTO LISTS. IN CSM, B-FACTORS  
+# REPRESENT PLDDT  
+# AUXILIARY FUNCTIONS:  
+# get_mean_b_factor: calculates mean B-factor per residue from atom table
 if(0){
   exp.b <- exp.bio3d |> map(\(x) get_mean_b_factor(x$atom))
   names(exp.b) <- paste0(db.eff$PDB_ID)
@@ -409,9 +412,9 @@ if(0){
     rename(Resnum.csm = Resnum, Chain.csm = Chain, pLDDT = b)
 }
 
-# PREPARES AND ADJUSTS EXP AND CSM OSP TABLES AND MERGES INTO UNIFIED OSP TABLE
-# AUXILIARY FUNCTIONS:
-# adjust_osp_table: recover residue id informations from original pdb
+# PREPARES AND ADJUSTS EXP AND CSM OSP TABLES AND MERGES INTO UNIFIED OSP TABLE  
+# AUXILIARY FUNCTIONS:  
+# adjust_osp_table: recovers residue ID information from original PDB
 if(0){
   exp.osp <- exp.osp |> map2(db.eff$PDB_ID, \(x,y) add_attr(x, y, "PDB"))
   exp.osp <- exp.osp |> map2(exp.bio3d, \(x, y) adjust_osp_table(x, y, resnum.original=TRUE)) |> 
@@ -436,9 +439,9 @@ if(0){
   }
 }
 
-# COMPUTES TORSIONS ANGLES FOR EACH UNIQUE PDB IN EXP AND CSM
-# AUXILIARY FUNCTIONS:
-# get_torsions_py: get side chain chi angles via python script
+# COMPUTES TORSION ANGLES FOR EACH UNIQUE PDB IN EXP AND CSM  
+# AUXILIARY FUNCTIONS:  
+# get_torsions_py: gets side chain chi angles via Python script
 if(0){
   folder_in <- "data_exp_pdb_cls_ali"
   folder_out <- "data_exp_cls_ali_tor"
@@ -449,9 +452,9 @@ if(0){
   pdbs |> walk(\(x) get_torsions_py(x, folder_in, folder_out))
 }
 
-# COMPUTE AND COMBINE CHI ANGLE DIFFS BETWEEN EXP AND CSM PDBS
-# AUXILIARY FUNCTIONS:
-# compare_chis_py: computes chi angle differences between two pdb torsion files and calculates angle diffs
+# COMPUTES AND COMBINES CHI ANGLE DIFFS BETWEEN EXP AND CSM PDBS  
+# AUXILIARY FUNCTIONS:  
+# compare_chis_py: computes chi angle differences between two PDB torsion files and calculates angle diffs
 if(0){
   folder_exp <- "data_exp_cls_ali_tor"
   folder_csm <- "data_csm_cls_ali_tor"
@@ -465,10 +468,10 @@ if(0){
   osp.uni <- osp.uni |> mutate(across(starts_with("OSP.dif"), ~ round(.x, 3)))
 }
 
-# COMPUTES ASA FOR EXP AND CSM STRUCTURES AND MERGES RESULTS.
-# CALCULATES ASA DIFFERENCE AND CLASSIFIES RESIDUES AS SURFACE OR CORE.
-# AUXILIARY FUNCTIONS:
-# frac_asa_py: computes relative sasa for each residue using Shrake Rupley
+# COMPUTES ASA FOR EXP AND CSM STRUCTURES AND MERGES RESULTS  
+# CALCULATES ASA DIFFERENCE AND CLASSIFIES RESIDUES AS SURFACE OR CORE  
+# AUXILIARY FUNCTIONS:  
+# frac_asa_py: computes relative SASA for each residue using Shrake-Rupley
 if(0){
   pdbs <- osp.uni$PDB_ID |> unique()
   folder_in <- "data_exp_pdb_cls_ali"
@@ -490,8 +493,8 @@ if(0){
   osp.uni <- osp.uni |> mutate(Position.csm = if_else(ASA.csm >= 0.25, "SURFACE", "CORE"))
 }
 
-# CALCULATES OSP MEAN, SD, AND MAD FOR EXP AND CSM STRUCTURES PER PDB_ID.
-# MERGES STATISTICS WITH DB.EFF AND FILTERS PDBS WITH CUTOFF SEQUENCE DIFFERENCE.
+# CALCULATES OSP MEAN, SD, AND MAD FOR EXP AND CSM STRUCTURES PER PDB_ID  
+# MERGES STATISTICS WITH DB.EFF AND FILTERS PDBS WITH CUTOFF SEQUENCE DIFFERENCE
 if(0){
   k <- 3
   res.stat <- tibble(PDB_ID = db.eff$PDB_ID,
@@ -509,8 +512,8 @@ if(0){
   osp.short <- osp.short |> mutate(Position = paste(Position.exp,"|",Position.csm))
 }
 
-# FILTER SELECTED PDBS AND RETRIEVE SSE VIA P-SEA FOR EXP AND CSM STRUCTURES.
-# JOIN SSE DATA AND TRANSLATE CODES TO ALPHA/BETA/COIL LABELS.
+# FILTERS SELECTED PDBS AND RETRIEVES SSE VIA P-SEA FOR EXP AND CSM STRUCTURES  
+# JOINS SSE DATA AND TRANSLATES CODES TO ALPHA/BETA/COIL LABELS
 if(0){
   #x <- pdb.bio3d[db$PDB_ID %in% db.work$PDB_ID]|> map2_dfr(db.work$PDB.path, \(x,y) get_pdb_sse(x,y))
   aux <- db.eff |> filter(PDB_ID %in% db.short$PDB_ID) |> select(PDB.cls.ali.path, CSM.cls.ali.path)
@@ -534,16 +537,16 @@ if(0){
   osp.short <- osp.short |> mutate(SSE = paste(SSE.exp,"|",SSE.csm))
 }
 
-# CALCULATES SQUARED DEVIATIONS AND INFLUENCE SCORES FOR EACH PDB_ID GROUP
-# FLAGS RESIDUES AS INFLUENTIAL USING VARIOUS CRITERIA (SQDIFF, INFL.DIFF, ...)
-# AUXILIARY FUNCTIONS:
-# add_stat_square_diff: calculates squared deviations of osp.exp and osp.csm from 
-# values in v.
-# add_stat_infl_sd: computes influence scores for osp exp and csm based on mean 
-# and sd values.
-# set_pack_type: define label according to differences in metrics v in csm and exp
-# set_influential_res: identifies influential residues by interactively comparing 
-# diff values using fun.
+# CALCULATES SQUARED DEVIATIONS AND INFLUENCE SCORES FOR EACH PDB_ID GROUP  
+# FLAGS RESIDUES AS INFLUENTIAL USING VARIOUS CRITERIA (SQDIFF, INFL.DIFF, ...)  
+# AUXILIARY FUNCTIONS:  
+# add_stat_square_diff: calculates squared deviations of OSP.EXP and OSP.CSM from  
+# values in V  
+# add_stat_infl_sd: computes influence scores for OSP.EXP and OSP.CSM based on mean  
+# and SD values  
+# set_pack_type: defines label according to differences in metrics V in CSM and EXP  
+# set_influential_res: identifies influential residues by interactively comparing  
+# diff values using FUN
 if(0){
   
   k = 3
@@ -631,7 +634,7 @@ if(0){
   osp.short.infl <- osp.short |> filter(Influential == "INFLUENTIAL")
 }
 
-# SAVE CSV OF DATASETS
+# SAVES CSV OF DATASETS
 if(0){
   
   # extended dataset

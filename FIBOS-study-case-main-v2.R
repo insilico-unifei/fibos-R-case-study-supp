@@ -2,7 +2,7 @@
 # FIBOS: R and Python packages for analyzing protein packing and structure
 # 
 # MAIN R SCRIPT FOR: a case study using FIBOS, comparing packing densities 
-# between experimental protein structures and AlphaFold predictions.
+# between experimental protein structures (EXP) and AlphaFold predictions (CSM).
 #
 # AUTHORS: 
 #

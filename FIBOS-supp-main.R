@@ -15,7 +15,7 @@
 # CONTACTS: hersinsoares@gmail.com, carlos.silveira@unifei.edu.br
 #
 # FIBOS install on R:
-# install.packages("fibos")
+# install.packages("fibos") 
 # See more here:  https://github.com/insilico-unifei/fibos-R 
 
 library(FIBOS)
